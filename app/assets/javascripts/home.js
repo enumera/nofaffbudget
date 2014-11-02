@@ -13,7 +13,7 @@ var main = function(){
     $('#weekly_balance').append($('<p id="current">'+ data.start_fund + '</p>'));
   });
 
-
+// Get category information and append to the main page.
   $.getJSON("/categories", function(data){
     console.log(data)
      var categoryList = $('#categories');
@@ -23,6 +23,8 @@ var main = function(){
       categoryList.append($newListItem);
       });
   });
+
+//Listener for category li
 
   $('#categories').on('click', 'li', function(){
     
@@ -37,7 +39,8 @@ var main = function(){
      
         $('#transactions-page').animate({left : "0px"}, 500);
         $('#home-page').animate({left : "320px"},1000);
-        
+         $('#transactions-page').removeClass('no-display');
+        $('#transactions-page').addClass('to-display');
         $.getJSON("/transactions", function(data){
           var transactionList = $('#transactions');
 
@@ -63,17 +66,26 @@ var main = function(){
     };
   });
 
+  //allow user to select back.
+
   $('#transactions').on('click', 'li', function(){
      
     $('.article').removeClass('selected');
+ 
     $this = $(this);
 
     if($this.hasClass('home')){
       $('#transactions-page').animate({left : "320px"}, 500);
       $('#home-page').animate({left : "0px"},1000);
       categorySelected=false;
+         $('#transactions-page').removeClass('to-display');
+      $('#transactions-page').addClass('no-display');
+   
+
     };
   });
+
+  // add a transaction
 
   var performTransaction = function(){
     console.log("In performTransaction")
