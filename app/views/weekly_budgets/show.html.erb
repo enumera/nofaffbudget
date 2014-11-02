@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Weekno:</b>
+  <%= @weekly_budget.weekno %>
+</p>
+
+<p>
+  <b>Budget:</b>
+  <%= @weekly_budget.budget_id %>
+</p>
+
+<p>
+  <b>Start fund:</b>
+  <%= @weekly_budget.start_fund %>
+</p>
+
+<p>
+  <b>Current fund:</b>
+  <%= @weekly_budget.current_fund %>
+</p>
+
+
+<%= link_to 'Edit', edit_weekly_budget_path(@weekly_budget) %> |
+<%= link_to 'Back', weekly_budgets_path %>

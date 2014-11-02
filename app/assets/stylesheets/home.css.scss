@@ -1,0 +1,106 @@
+
+#home-page{
+  position: absolute;
+  width: 320px;
+  height: 460px;
+ 
+}
+
+.setButton{
+ position: relative;
+
+ top: 10px;
+ left: 210px;
+
+}
+
+#transaction-input{
+  margin:2px 0 0 10px;
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 300%;
+
+}
+
+#transactions-page{
+  position: absolute;
+  width: 320px;
+  height: 460px;
+  left: 320px;
+ 
+ 
+}
+
+#categories, #transactions{
+  list-style-type: none;
+  padding:0px;
+  margin: 0px;
+}
+
+#weekly_balance{
+  position: relative;
+  top: 10px;
+  left: 60px;
+  width:180px;
+  height: 180px;
+  border-radius: 90px;
+  border: 2px solid green;
+  text-align: center;
+}
+
+#current{
+  position: relative;
+  top: 32px;
+  font-size: 400%;
+
+}
+
+
+#header {
+  border: 2px solid blue;
+  width: 300px;
+  height: 200px;
+  padding: 0 0 0 0;
+  border-radius: 20px;
+}
+
+#content{
+  margin: 5px 0 0 0 ;
+  width: 300px;
+  height: 230px;
+  overflow: scroll;
+  border: 2px solid red;
+
+}
+
+#input{
+  margin: 5px 0 5px 5px;
+  width: 280px;
+  height: 50px;
+  border: 2px solid green;
+  border-radius: 5px;
+
+}
+
+
+#input_wrapper{
+  margin: 5px 0 5px 0;
+  width: 295px;
+  height: 60px;
+  border: 2px solid blue;
+  
+}
+
+.selected{
+  background-color: red;
+}
+
+.article {
+margin: 5px;
+  width: 290px;
+  height: 50px;
+  border: 2px solid green;
+  border-radius: 5px;
+ 
+}

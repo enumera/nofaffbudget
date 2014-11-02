@@ -1,0 +1,29 @@
+<h1>Listing weekly_budgets</h1>
+
+<table>
+  <tr>
+    <th>Weekno</th>
+    <th>Budget</th>
+    <th>Start fund</th>
+    <th>Current fund</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @weekly_budgets.each do |weekly_budget| %>
+  <tr>
+    <td><%= weekly_budget.weekno %></td>
+    <td><%= weekly_budget.budget_id %></td>
+    <td><%= weekly_budget.start_fund %></td>
+    <td><%= weekly_budget.current_fund %></td>
+    <td><%= link_to 'Show', weekly_budget %></td>
+    <td><%= link_to 'Edit', edit_weekly_budget_path(weekly_budget) %></td>
+    <td><%= link_to 'Destroy', weekly_budget, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Weekly budget', new_weekly_budget_path %>
