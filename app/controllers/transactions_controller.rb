@@ -42,7 +42,7 @@ class TransactionsController < ApplicationController
   def create
     @transaction = Transaction.new(params[:transaction])
 
-    binding.pry
+  
 
     respond_to do |format|
       if @transaction.save
