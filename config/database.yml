@@ -49,4 +49,6 @@ production:
   encoding: unicode
   database: nofaffbudget_production
   pool: 5
+  username: nofaffbudget
+  password:
 
