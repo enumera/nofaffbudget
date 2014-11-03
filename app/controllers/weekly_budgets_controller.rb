@@ -95,7 +95,7 @@ class WeeklyBudgetsController < ApplicationController
   def update
     if params[:budget_id].nil?
       @budget = Budget.find(params[:budget_id])
-        @weekly_budget = @budget.weekly_budgets.find(params[:id])
+      @weekly_budget = @budget.weekly_budgets.find(params[:id])
     else
         @budget = 999
        @weekly_budget = WeeklyBudget.find(params[:id])

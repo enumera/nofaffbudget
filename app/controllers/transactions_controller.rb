@@ -46,11 +46,19 @@ class TransactionsController < ApplicationController
   # POST /transactions.json
   def create
     @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
-
     @transaction = @weekly_budget.transactions.new(params[:transaction])
+
+    new_current_fund = @weekly_budget.current_fund - @transaction.amount
+
+    weekly_budget_update = {}
+    weekly_budget_update[:weekly_budget] = {}
+    weekly_budget_update[:weekly_budget][:current_fund] = new_current_fund
+    weekly_budget_update.to_json
+
 
     respond_to do |format|
       if @transaction.save
+          @weekly_budget.update_attributes(weekly_budget_update[:weekly_budget])
         format.html { redirect_to weekly_budget_transaction_path(@weekly_budget, @transaction), notice: 'Transaction was successfully created.' }
         format.json { render json: @transaction, status: :created, location: weekly_budget_transaction_path(@weekly_budget, @transaction) }
       else

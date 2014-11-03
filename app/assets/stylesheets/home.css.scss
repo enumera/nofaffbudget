@@ -33,7 +33,7 @@
  
 }
 
-#categories, #transactions{
+#categories, #transactions, #menu-items{
   list-style-type: none;
   padding:0px;
   margin: 0px;
@@ -44,7 +44,7 @@
   top: 10px;
   left: 60px;
   width:180px;
-  height: 180px;
+  height: 80px;
   border-radius: 90px;
   border: 2px solid green;
   text-align: center;
@@ -52,7 +52,7 @@
 
 #current{
   position: relative;
-  top: 32px;
+  top: -15px;
   font-size: 400%;
 
 }
@@ -61,7 +61,7 @@
 #header {
   border: 2px solid blue;
   width: 300px;
-  height: 200px;
+  height: 100px;
   padding: 0 0 0 0;
   border-radius: 20px;
 }
@@ -69,13 +69,13 @@
 #content{
   margin: 5px 0 0 0 ;
   width: 300px;
-  height: 230px;
+  height: 345px;
   overflow: scroll;
   border: 2px solid red;
 
 }
 
-#input{
+.input{
   margin: 5px 0 5px 5px;
   width: 280px;
   height: 50px;
@@ -85,7 +85,7 @@
 }
 
 
-#input_wrapper{
+.input_wrapper{
   margin: 5px 0 5px 0;
   width: 295px;
   height: 60px;
@@ -112,3 +112,54 @@ margin: 5px;
 .to-display{
   display: block;
 }
+
+#category-header{
+  width: 300px;
+  height: 20px;
+  font-size: 400%;
+  color: yellow;
+  background-color: red;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#category-input{
+  margin:2px 0 0 10px;
+  width: 240px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 300%;
+
+}
+
+#category-submit{
+  width: 300px;
+  height: 40px;
+  font-size: 100%;
+
+}
+
+.close{
+  width: 300px;
+  height: 40px;
+  font-size: 100%;
+
+}
+
+#add-category-page{
+  position: absolute;
+  width: 320px;
+  height: 460px;
+  left: 320px;
+  overflow: hidden;
+}
+
+#menu-page{
+  position:absolute;
+  width:300px;
+  right: 320px;
+}
+
+
+
+

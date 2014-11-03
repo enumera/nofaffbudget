@@ -4,4 +4,6 @@ class Transaction < ActiveRecord::Base
   belongs_to :category
   belongs_to :weekly_budget
 
+  
+
 end
