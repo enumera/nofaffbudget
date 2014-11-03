@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
     @categories = Category.all
     @week_budget = WeeklyBudget.last
-    @transactions = Transaction.where(weekly_budget_id: @week_budget[:id])
+    @transactions = @week_budget.transactions.all
 
   end
 

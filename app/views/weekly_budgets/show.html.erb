@@ -20,6 +20,11 @@
   <%= @weekly_budget.current_fund %>
 </p>
 
+<% if @budget.nil? %>
+    <%= link_to 'Edit', edit_weekly_budget_path(@weekly_budget) %> |
+    <%= link_to 'Back', weekly_budgets_path %>
+<%else%>
 
-<%= link_to 'Edit', edit_weekly_budget_path(@weekly_budget) %> |
-<%= link_to 'Back', weekly_budgets_path %>
+    <%= link_to 'Edit', edit_budget_weekly_budget_path(@budget, @weekly_budget) %> |
+    <%= link_to 'Back', budget_weekly_budgets_path(@budget) %>
+  <% end %>

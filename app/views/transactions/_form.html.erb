@@ -1,4 +1,4 @@
-<%= form_for(@transaction) do |f| %>
+<%= form_for([@weekly_budget, @transaction]) do |f| %>
   <% if @transaction.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
@@ -19,10 +19,7 @@
     <%= f.label :amount %><br />
     <%= f.text_field :amount %>
   </div>
-  <div class="field">
-    <%= f.label :weekly_budget_id %><br />
-    <%= f.collection_select :weekly_budget_id, WeeklyBudget.all, :id, :weekno %>
-  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -17,13 +17,26 @@
     <td><%= weekly_budget.budget_id %></td>
     <td><%= weekly_budget.start_fund %></td>
     <td><%= weekly_budget.current_fund %></td>
-    <td><%= link_to 'Show', weekly_budget %></td>
-    <td><%= link_to 'Edit', edit_weekly_budget_path(weekly_budget) %></td>
-    <td><%= link_to 'Destroy', weekly_budget, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+    <% if @budget==999 %>
+
+      <td><%= link_to 'Show', weekly_budget %></td>
+      <td><%= link_to 'Edit', edit_weekly_budget_path(weekly_budget) %></td>
+      <td><%= link_to 'Destroy', weekly_budget, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% else %>
+        <td><%= link_to 'Show', budget_weekly_budget_path(@budget, weekly_budget) %></td>
+        <td><%= link_to 'Edit', edit_budget_weekly_budget_path(@budget, weekly_budget) %></td>
+        <td><%= link_to 'Destroy', [@budget,weekly_budget], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
 <% end %>
 </table>
 
 <br />
+<% if @budget == 999 %>
+ <%= link_to 'New Weekly budget', new_weekly_budget_path %>
+ 
+<% else %>
+ <%= link_to 'New Weekly budget', new_budget_weekly_budget_path(@budget) %>
 
-<%= link_to 'New Weekly budget', new_weekly_budget_path %>
+<% end %>

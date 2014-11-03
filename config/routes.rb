@@ -1,14 +1,21 @@
 Nofaffbudget::Application.routes.draw do
-  resources :transactions
+  #resources :transactions 
 
+  resources :weekly_budgets do
+    resources :transactions
+  end
 
-  resources :weekly_budgets
 
 
   resources :categories
 
 
-  resources :budgets
+  resources :budgets do
+    resources :weekly_budgets 
+  end
+
+
+
 
 
   # The priority is based upon order of creation:

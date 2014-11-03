@@ -8,12 +8,15 @@ var main = function(){
   console.log("this is being run");
   $('ul').html("");
 
-  $.getJSON("/weekly_budgets/1", function(data){
-    console.log(data.current_fund);
-    $('#weekly_balance').append($('<p id="current">'+ data.start_fund + '</p>'));
-  });
+// gets the weekly budget information
+
+    $.getJSON("/weekly_budgets/1", function(data){
+      console.log(data.current_fund);
+      $('#weekly_balance').append($('<p id="current">'+ data.start_fund + '</p>'));
+    });
 
 // Get category information and append to the main page.
+
   $.getJSON("/categories", function(data){
     console.log(data)
      var categoryList = $('#categories');
@@ -38,12 +41,16 @@ var main = function(){
       if($('#transaction-input').val()==""){
      
         $('#transactions-page').animate({left : "0px"}, 500);
-        $('#home-page').animate({left : "320px"},1000);
-         $('#transactions-page').removeClass('no-display');
-        $('#transactions-page').addClass('to-display');
-        $.getJSON("/transactions", function(data){
-          var transactionList = $('#transactions');
+        // $('#home-page').animate({left : "320px"},1000);
+         $('#home-page').fadeOut();
 
+        $('#transactions-page').fadeIn();
+
+        //  $('#transactions-page').removeClass('no-display');
+        // $('#transactions-page').addClass('to-display');
+
+        $.getJSON("weekly_budgets/1/transactions", function(data){
+          var transactionList = $('#transactions');
           $.each(data, function(i, transaction){
             var $newListItem = $('<li class="article">' + transaction.amount + '<li>');
             transactionList.append($newListItem);
@@ -52,14 +59,20 @@ var main = function(){
         });
 
       }else
+
         {  
           if(!$this.hasClass('with-button') && buttonSet === false){
-            buttonSet = true;
-            $this.addClass('with-button');
-            $this.append('<span class="setButton"><button>Set</button></span>').click(function(){
+              buttonSet = true;
+              $this.addClass('with-button');
+              $this.append('<span class="setButton"><button>Set</button></span>').click(function(){
                 console.log("transaction now logged");
-              //add a function to process the transaction
-              performTransaction();
+                  //add a function to process the transaction
+                  performTransaction();
+                   $this.toggleClass('selected');
+                    categorySelected = false;
+                      $this.removeClass('with-button');
+                      $('.setButton').remove();
+                      $('#transaction-input').val('');
           });
         };
       };
@@ -76,12 +89,12 @@ var main = function(){
 
     if($this.hasClass('home')){
       $('#transactions-page').animate({left : "320px"}, 500);
-      $('#home-page').animate({left : "0px"},1000);
-      categorySelected=false;
-         $('#transactions-page').removeClass('to-display');
-      $('#transactions-page').addClass('no-display');
-   
-
+      // $('#home-page').animate({left : "0px"},1000);
+        categorySelected=false;
+        $('#transactions-page').fadeOut();
+        $('#transactons-page').html("");
+        $('#home-page').fadeIn();
+     
     };
   });
 
@@ -91,7 +104,7 @@ var main = function(){
     console.log("In performTransaction")
     //ajax call to transaction
 
-    path="transactions";
+    path="weekly_budgets/1/transactions";
     method = "POST";
 
     var data = {};

@@ -2,7 +2,8 @@ class TransactionsController < ApplicationController
   # GET /transactions
   # GET /transactions.json
   def index
-    @transactions = Transaction.all
+    @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
+    @transactions = @weekly_budget.transactions.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +14,9 @@ class TransactionsController < ApplicationController
   # GET /transactions/1
   # GET /transactions/1.json
   def show
-    @transaction = Transaction.find(params[:id])
+    @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
+
+    @transaction =@weekly_budget.transactions.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,6 +27,7 @@ class TransactionsController < ApplicationController
   # GET /transactions/new
   # GET /transactions/new.json
   def new
+    @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
     @transaction = Transaction.new
 
     respond_to do |format|
@@ -34,20 +38,21 @@ class TransactionsController < ApplicationController
 
   # GET /transactions/1/edit
   def edit
-    @transaction = Transaction.find(params[:id])
+    @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
+    @transaction = @weekly_budget.transactions.find(params[:id])
   end
 
   # POST /transactions
   # POST /transactions.json
   def create
-    @transaction = Transaction.new(params[:transaction])
+    @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
 
-  
+    @transaction = @weekly_budget.transactions.new(params[:transaction])
 
     respond_to do |format|
       if @transaction.save
-        format.html { redirect_to @transaction, notice: 'Transaction was successfully created.' }
-        format.json { render json: @transaction, status: :created, location: @transaction }
+        format.html { redirect_to weekly_budget_transaction_path(@weekly_budget, @transaction), notice: 'Transaction was successfully created.' }
+        format.json { render json: @transaction, status: :created, location: weekly_budget_transaction_path(@weekly_budget, @transaction) }
       else
         format.html { render action: "new" }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
@@ -58,11 +63,13 @@ class TransactionsController < ApplicationController
   # PUT /transactions/1
   # PUT /transactions/1.json
   def update
-    @transaction = Transaction.find(params[:id])
+    @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
+
+    @transaction = @weekly_budget.transactions.find(params[:id])
 
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
-        format.html { redirect_to @transaction, notice: 'Transaction was successfully updated.' }
+        format.html { redirect_to weekly_budget_transaction_path(@weekly_budget, @transaction), notice: 'Transaction was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -74,11 +81,13 @@ class TransactionsController < ApplicationController
   # DELETE /transactions/1
   # DELETE /transactions/1.json
   def destroy
-    @transaction = Transaction.find(params[:id])
+    @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
+
+    @transaction = @weekly_budget.transactions.find(params[:id])
     @transaction.destroy
 
     respond_to do |format|
-      format.html { redirect_to transactions_url }
+      format.html { redirect_to weekly_budget_transactions_url }
       format.json { head :no_content }
     end
   end

@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @weekly_budget %> |
-<%= link_to 'Back', weekly_budgets_path %>
+<%= link_to 'Show', budget_weekly_budget_path(@budget, @weekly_budget) %> |
+<%= link_to 'Back', budget_weekly_budgets_path(@budget) %>

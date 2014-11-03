@@ -1,15 +1,22 @@
+<% if @budget == 999 %>
 <%= form_for(@weekly_budget) do |f| %>
-  <% if @weekly_budget.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@weekly_budget.errors.count, "error") %> prohibited this weekly_budget from being saved:</h2>
 
-      <ul>
-      <% @weekly_budget.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<% else %>
+
+<%= form_for([@budget, @weekly_budget]) do |f| %>
+
+<%end%>
+    <% if @weekly_budget.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@weekly_budget.errors.count, "error") %> prohibited this weekly_budget from being saved:</h2>
+
+        <ul>
+        <% @weekly_budget.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
 
   <div class="field">
     <%= f.label :weekno %><br />
