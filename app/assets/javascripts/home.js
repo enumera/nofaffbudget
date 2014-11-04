@@ -87,11 +87,11 @@ var main = function(){
 
   $('#categories').on('click', 'li', function(){
     
-  
     if(categorySelected===false){
       $this = $(this);
       console.log($this);
       $this.toggleClass('selected');
+      var categoryNameSelected = $this.attr('value');
       categorySelected = true;
 
    
@@ -105,9 +105,18 @@ var main = function(){
 
         $.getJSON("weekly_budgets/1/transactions", function(data){
           var transactionList = $('#transactions');
+
+    
+
+          console.log(categoryNameSelected);
+
           $.each(data, function(i, transaction){
+
+            if(categoryNameSelected == transaction.category_id){
+
             var $newListItem = $('<li class="article">' + transaction.amount + '<li>');
             transactionList.append($newListItem);
+            };
           });
           transactionList.append($('<li class="article home"> Back</li>'));
         });
@@ -152,10 +161,9 @@ var main = function(){
     $this = $(this);
 
     if($this.hasClass('home')){
-      $('#transactions-page').animate({left : "320px"}, 500);
+      $('#transactions-page').fadeOut().animate({left : "320px"}, 500);
       // $('#home-page').animate({left : "0px"},1000);
         categorySelected=false;
-        $('#transactions-page').fadeOut();
         $('#transactons-page').html("");
         $('#home-page').fadeIn();
     };
