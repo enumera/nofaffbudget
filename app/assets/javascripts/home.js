@@ -79,7 +79,7 @@ var main = function(){
       createCategory(newCategoryName);
         $('#category-input').val("");
         $('#add-category-page').animate({left : "320px"},1000);
-        $('#home-page').animate({left : "10px"}, 1000).fadein(500);
+        $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
         initialise();
     });
 
