@@ -7,6 +7,9 @@ var main = function(){
      var initialise = function(){
     // gets the weekly budget information
 
+      $('#menu-page').hide();
+      $('#add-category-page').hide();
+
         $.getJSON("/weekly_budgets/1", function(data){
           $('#weekly_balance').html("");
           console.log(data.current_fund);
@@ -60,13 +63,13 @@ var main = function(){
       $this = $(this);
       var menuSelected = $this.text();
       console.log(menuSelected);
-      $('#menu-page').fadeOut().animate({left : "320px"},1000);
-      $('#home-page').fadeOut().animate({left : "320px"}, 1000);
+      $('#menu-page').animate({left : "320px"},1000).fadeOut();
+      $('#home-page').animate({left : "320px"}, 1000).fadeOut();
 
       switch(menuSelected){
         //create a new category
         case "Add a new category":
-             $('#add-category-page').animate({left : "10px"},1000);
+             $('#add-category-page').animate({left : "10px"},1000).fadeIn(500);
             break;
       };
     });
@@ -76,7 +79,7 @@ var main = function(){
       createCategory(newCategoryName);
         $('#category-input').val("");
         $('#add-category-page').animate({left : "320px"},1000);
-        $('#home-page').fadeIn().animate({left : "10px"}, 1000);
+        $('#home-page').animate({left : "10px"}, 1000).fadein(500);
         initialise();
     });
 
@@ -169,7 +172,7 @@ var main = function(){
 
       switch(pageOpen){
         case "add-category-page":
-          $('#add-category-page').animate({left : "320px"},1000);
+          $('#add-category-page').fadeOut().animate({left : "320px"},1000);
           $('#home-page').fadeIn().animate({left : "10px"},1000);
           break;
 
