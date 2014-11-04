@@ -14,8 +14,6 @@ class CategoriesController < ApplicationController
             @transactions.each do |t|
               if t.category_id == c.id
                 sum_value = sum_value + t.amount.to_f
-                puts c.name
-                puts t.amount
               end
             end
             @category_hash << sum_value.round(2)
