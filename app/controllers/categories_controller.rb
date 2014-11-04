@@ -2,11 +2,29 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
+    @week_budget = WeeklyBudget.last
     @categories = Category.all
+
+      @transactions = @week_budget.transactions.all
+
+          @category_hash = []
+
+          @categories.each do |c|
+            sum_value = 0.0
+            @transactions.each do |t|
+              if t.category_id == c.id
+                sum_value = sum_value + t.amount.to_f
+                puts c.name
+                puts t.amount
+              end
+            end
+            @category_hash << sum_value.round(2)
+          end
+          puts @category_hash
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @categories }
+      format.json { render json: {:categories => @categories, :amounts=>@category_hash}}
     end
   end
 

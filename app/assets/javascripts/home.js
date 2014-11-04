@@ -16,15 +16,22 @@ var main = function(){
     // Get category information and append to the main page.
 
       $.getJSON("/categories", function(data){
-        console.log(data)
+        console.log(data.categories)
+
          var categoryList = $('#categories');
 
-          $.each(data, function(i, category){
+         categoryList.html("");
+
+          $.each(data.categories, function(i, category){
           var $newListItem = $('<li class="article" value='+ category.id +'>' + category.name + '</li>');
-          categoryList.append($newListItem);
+              categoryList.append($newListItem);
           });
-      });
-    }
+
+            $('#categories li').each(function(i){
+              $(this).append('<span class="amount">' +'    '+ data.amounts[i] + '</span>');
+            });
+          });
+        }
 
    initialise();
 
@@ -86,7 +93,7 @@ var main = function(){
 
    
       if($('#transaction-input').val()==""){
-     
+        $('#transactions').html("");
         $('#transactions-page').animate({left : "0px"}, 500);
         // $('#home-page').animate({left : "320px"},1000);
          $('#home-page').fadeOut();
@@ -111,7 +118,7 @@ var main = function(){
               $this.addClass('with-button');
               console.log("this has been found");
               console.log(buttonSet)
-              $this.append('<span class="setButton"><button>Set</button></span>').click(function(){
+              $this.append('<span class="setButton"><button>Allocate</button></span>').click(function(){
                 console.log("transaction now logged");
                   //add a function to process the transaction
 
