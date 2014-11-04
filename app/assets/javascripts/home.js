@@ -16,7 +16,7 @@ var main = function(){
     // Get category information and append to the main page.
 
       $.getJSON("/categories", function(data){
-        console.log(data.categories)
+        console.log(data)
 
          var categoryList = $('#categories');
 
