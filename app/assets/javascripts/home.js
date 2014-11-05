@@ -49,16 +49,7 @@ var main = function(){
          console.log(nextWeekNo);
          console.log(currentWeekNo);
 
-
-        $.getJSON("budgets/1/weekly_budgets/" + currentWeekNo, function(data){
-          $('#weekly_balance').html("");
-          console.log("in this code");
-          $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
-        });
-      });
- 
-
-    // Get category information and append to the main page.
+          // Get category information and append to the main page.
 
       $.getJSON("/categories", function(data){
         console.log(data)
@@ -72,10 +63,41 @@ var main = function(){
               categoryList.append($newListItem);
           });
 
+          $.getJSON("weekly_budgets/"+ currentWeekNo + "/transactions", function(data){
             $('#categories li').each(function(i){
               $(this).append('<span class="amount">' +'    '+ data.amounts[i] + '</span>');
             });
           });
+        });
+
+        $.getJSON("budgets/1/weekly_budgets/" + currentWeekNo, function(data){
+          $('#weekly_balance').html("");
+          console.log("in this code");
+          $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
+        });
+      });
+ 
+
+    // Get category information and append to the main page.
+
+      // $.getJSON("/categories", function(data){
+      //   console.log(data)
+
+      //    var categoryList = $('#categories');
+
+      //    categoryList.html("");
+
+      //     $.each(data.categories, function(i, category){
+      //     var $newListItem = $('<li class="article" value='+ category.id +'>' + category.name + '</li>');
+      //         categoryList.append($newListItem);
+      //     });
+
+      //     $.getJSON("weekly_budgets/"+ currentWeekNo + "/transactions", function(data){
+      //       $('#categories li').each(function(i){
+      //         $(this).append('<span class="amount">' +'    '+ data.amounts[i] + '</span>');
+      //       });
+      //       });
+      //     });
         }
 
    initialise();
@@ -161,14 +183,12 @@ var main = function(){
 
         $('#transactions-page').fadeIn();
 
-        $.getJSON("weekly_budgets/1/transactions", function(data){
+        $.getJSON("weekly_budgets/"+ currentWeekNo + "/transactions", function(data){
           var transactionList = $('#transactions');
-
-    
 
           console.log(categoryNameSelected);
 
-          $.each(data, function(i, transaction){
+          $.each(data.transactions, function(i, transaction){
 
             if(categoryNameSelected == transaction.category_id){
 
@@ -194,7 +214,9 @@ var main = function(){
 
                   data['category_id'] = parseInt($this.attr('value'));
                   data['amount'] = parseFloat($('#transaction-input').val());
-                  data['weekly_budget_id'] = 1;
+                  data['weekly_budget_id'] = currentWeekNo;
+
+                  console.log(data);
 
                   performTransaction(data);
                    $this.toggleClass('selected');
@@ -256,7 +278,7 @@ var main = function(){
     console.log("In performTransaction")
     //ajax call to transaction
 
-    path="weekly_budgets/1/transactions";
+    path="weekly_budgets/"+ data.weekly_budget_id  +"/transactions";
     method = "POST";
 
     // var data = {};
@@ -278,7 +300,6 @@ var main = function(){
     data: {transaction: data},
     dataType: "json"
     });
-
   };
 
   var createCategory = function(categoryName){
@@ -328,12 +349,7 @@ var main = function(){
     });
 
   };
-
-
 };
-
-
-
 
 
 $(document).ready(main)

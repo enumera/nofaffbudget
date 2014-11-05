@@ -4,10 +4,26 @@ class TransactionsController < ApplicationController
   def index
     @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
     @transactions = @weekly_budget.transactions.all
+     @categories = Category.all
+
+      @transactions = @weekly_budget.transactions.all
+
+          @category_hash = []
+
+          @categories.each do |c|
+            sum_value = 0.0
+            @transactions.each do |t|
+              if t.category_id == c.id
+                sum_value = sum_value + t.amount.to_f
+              end
+            end
+            @category_hash << sum_value.round(2)
+          end
+          puts @category_hash
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @transactions }
+      format.json { render json: {:transactions=>@transactions, :amounts=>@category_hash} }
     end
   end
 

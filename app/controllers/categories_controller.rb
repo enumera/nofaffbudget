@@ -2,6 +2,7 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
+    
     @week_budget = WeeklyBudget.last
     @categories = Category.all
 
