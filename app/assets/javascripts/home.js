@@ -3,14 +3,38 @@ var main = function(){
    var buttonSet = false;
    var categorySelected = false;
    var menu_shown = false;
+   var nextWeekNo = 0;
+
+
+  function getLatestWeekno(){
+     $.getJSON("budgets/1/weekly_budgets", function(data){
+      
+      console.log(data);
+      var dataLength = data.length;
+      console.log(dataLength);
+        
+       nextWeekNo = parseInt(data[dataLength-1].weekno) + 1;
+       console.log("This week no is working:")
+       console.log(nextWeekNo);
+
+      // return newWeekno;
+          
+      });
+  };
 
      var initialise = function(){
     // gets the weekly budget information
 
       $('#menu-page').hide();
       $('#add-category-page').hide();
+      $('#new-weekly-budget-page').hide();
+      $("#datepicker" ).datepicker();
 
-        $.getJSON("/weekly_budgets/1", function(data){
+      getLatestWeekno();
+      //     console.log(nextWeekNo);
+     
+
+      $.getJSON("budgets/1/weekly_budgets/1", function(data){
           $('#weekly_balance').html("");
           console.log(data.current_fund);
           $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
@@ -71,14 +95,29 @@ var main = function(){
         case "Add a new category":
              $('#add-category-page').animate({left : "10px"},1000).fadeIn(500);
             break;
+        case "Add a new weekly budget":
+             $('#day-of-week').hide();
+             $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
+            break;
       };
     });
+
+      $('#weekly-budget-submit').on('click', function(){
+        var newBudgetAmount = $('#budget-input').val();
+        createWeeklyBudget(newBudgetAmount, nextWeekNo);
+        $('#budget-input').val("");
+        $('#new-weekly-budget-page').fadeOut().animate({left : "320px"},1000);
+        $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
+        initialise();
+    });
+
+
 
     $('#category-submit').on('click', function(){
       var newCategoryName = $('#category-input').val();
       createCategory(newCategoryName);
         $('#category-input').val("");
-        $('#add-category-page').animate({left : "320px"},1000);
+        $('#add-category-page').fadeOut().animate({left : "320px"},1000);
         $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
         initialise();
     });
@@ -183,6 +222,10 @@ var main = function(){
           $('#add-category-page').fadeOut().animate({left : "320px"},1000);
           $('#home-page').fadeIn().animate({left : "10px"},1000);
           break;
+        case "new-weekly-budget-page":
+          $('#new-weekly-budget-page').fadeOut().animate({left : "320px"},1000);
+          $('#home-page').fadeIn().animate({left : "10px"},1000);
+          break;
 
       }
 
@@ -237,7 +280,36 @@ var main = function(){
       data: {category: data},
       dataType: "json"
       });
-    };
+  };
+
+
+
+  var createWeeklyBudget = function(weeklyBudget, nextWeekNo){
+    console.log(nextWeekNo);
+   
+    path="budgets/1/weekly_budgets"
+    method="POST"
+
+    var data = {};
+
+
+
+    data["budget_id"] = 1;
+    data["start_fund"] = weeklyBudget;
+    data["current_fund"] = weeklyBudget;
+    data["weekno"] = nextWeekNo;
+
+    console.log(data);
+
+     $.ajax({
+      url: path,
+      method: method,
+      data: {weekly_budget: data},
+      dataType: "json"
+    });
+
+  };
+
 
 };
 

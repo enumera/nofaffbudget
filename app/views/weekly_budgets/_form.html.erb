@@ -1,11 +1,5 @@
-<% if @budget == 999 %>
-<%= form_for(@weekly_budget) do |f| %>
-
-<% else %>
-
 <%= form_for([@budget, @weekly_budget]) do |f| %>
 
-<%end%>
     <% if @weekly_budget.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@weekly_budget.errors.count, "error") %> prohibited this weekly_budget from being saved:</h2>
@@ -22,10 +16,7 @@
     <%= f.label :weekno %><br />
     <%= f.number_field :weekno %>
   </div>
-  <div class="field">
-    <%= f.label :budget_id %><br />
-    <%= f.number_field :budget_id %>
-  </div>
+
   <div class="field">
     <%= f.label :start_fund %><br />
     <%= f.text_field :start_fund %>

@@ -19,7 +19,7 @@
     <td><%= weekly_budget.current_fund %></td>
     <% if @budget==999 %>
 
-      <td><%= link_to 'Show', weekly_budget %></td>
+      <td><%= link_to 'Show', budget_weekly_budget_path(@budget) %></td>
       <td><%= link_to 'Edit', edit_weekly_budget_path(weekly_budget) %></td>
       <td><%= link_to 'Destroy', weekly_budget, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
