@@ -4,23 +4,27 @@ var main = function(){
    var categorySelected = false;
    var menu_shown = false;
    var nextWeekNo = 0;
+   var currentWeekNo = 0;
 
 
-  function getLatestWeekno(){
-     $.getJSON("budgets/1/weekly_budgets", function(data){
+  // function getLatestWeekno(){
+  //    $.getJSON("budgets/1/weekly_budgets", function(data){
       
-      console.log(data);
-      var dataLength = data.length;
-      console.log(dataLength);
+  //     console.log(data);
+  //     var dataLength = data.length;
+  //     console.log(dataLength);
         
-       nextWeekNo = parseInt(data[dataLength-1].weekno) + 1;
-       console.log("This week no is working:")
-       console.log(nextWeekNo);
+  //      nextWeekNo = parseInt(data[dataLength-1].weekno) + 1;
+  //      currentWeekNo = parseInt(dataLength-1);
+  //      console.log("This week no is working:")
+  //      console.log(nextWeekNo);
+  //      console.log(currentWeekNo);
 
-      // return newWeekno;
+
+  //     // return newWeekno;
           
-      });
-  };
+  //     });
+  // };
 
      var initialise = function(){
     // gets the weekly budget information
@@ -30,15 +34,29 @@ var main = function(){
       $('#new-weekly-budget-page').hide();
       $("#datepicker" ).datepicker();
 
-      getLatestWeekno();
+      // $getLatestWeekno();
       //     console.log(nextWeekNo);
      
+     $.getJSON("budgets/1/weekly_budgets", function(data){
+      
+        console.log(data);
+        var dataLength = data.length;
+        console.log(dataLength);
+          
+         nextWeekNo = parseInt(data[dataLength-1].weekno) + 1;
+         currentWeekNo = parseInt(data[dataLength-1].id);
+         console.log("This week no is working:")
+         console.log(nextWeekNo);
+         console.log(currentWeekNo);
 
-      $.getJSON("budgets/1/weekly_budgets/1", function(data){
+
+        $.getJSON("budgets/1/weekly_budgets/" + currentWeekNo, function(data){
           $('#weekly_balance').html("");
-          console.log(data.current_fund);
+          console.log("in this code");
           $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
         });
+      });
+ 
 
     // Get category information and append to the main page.
 
@@ -103,6 +121,7 @@ var main = function(){
     });
 
       $('#weekly-budget-submit').on('click', function(){
+
         var newBudgetAmount = $('#budget-input').val();
         createWeeklyBudget(newBudgetAmount, nextWeekNo);
         $('#budget-input').val("");
@@ -125,7 +144,7 @@ var main = function(){
 //Listener for category li
 
   $('#categories').on('click', 'li', function(){
-    
+     console.log(currentWeekNo);
     if(categorySelected===false){
       $this = $(this);
       console.log($this);
