@@ -8,12 +8,49 @@ var main = function(){
    var budget = 1;
    var currentFund;
    var startFund;
+   var endDate;
+   var daysLeft;
 
     $('#menu-page').hide();
     $('#add-category-page').hide();
     $('#new-weekly-budget-page').hide();
     $('#new-budget-page').hide();
     $("#datepicker" ).datepicker();
+
+    var calculateTimeLeft = function(endDate){
+      // console.log($scope.selectedTask.end_date)
+      var finishDate = new Date(endDate);
+             
+              finishDate.setHours(23);
+              finishDate.setMinutes(59);
+                 var g = new Date();
+                  var n = g.toString();
+                  console.log(n)
+
+
+              var d = new Date();
+              var timeNow = d.getTime()
+              var timeDiff = finishDate.getTime() - timeNow
+              var days = Math.floor(timeDiff / (1000 * 3600 * 24)); 
+              timeDiff = timeDiff - days * (1000 * 3600 * 24)
+              var hours = Math.floor(timeDiff / (1000 * 3600 ));
+              timeDiff = timeDiff - hours * (1000 * 3600 );
+              var minutes = Math.floor(timeDiff / (1000 * 60 ));
+              timeDiff = timeDiff - minutes * (1000 * 60 )
+              var seconds = timeDiff / (1000 ); 
+              
+              // $scope.daysLeft = days;
+              // $scope.hoursLeft = hours;
+
+
+              console.log(days)
+             console.log(hours)
+             console.log(finishDate)
+
+             return days;
+
+            }
+
 
   var selectBudget = function(){
       $('#budgets').html("");
@@ -105,8 +142,13 @@ var main = function(){
 
           currentFund = data.current_fund;
           startFund = data.start_fund;
+          endDate = data.end_date;
 
+          daysLeft = calculateTimeLeft(endDate);
+          console.log(daysLeft);
 
+          $('#time_left').text(daysLeft + " days left");
+          
           $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
 
           console.log(data.current_fund);
@@ -114,13 +156,17 @@ var main = function(){
               console.log('checking balance');
               $('#weekly_balance').removeClass("positive");
               $('#header_title').removeClass("positive");
+              $('#time_left').removeClass("positive");
               $('#weekly_balance').addClass('negative');
               $('#header_title').addClass('negative');
+              $('#time_left').addClass("negative");
           }else{
               $('#weekly_balance').removeClass("negative");
               $('#header_title').removeClass("negative");
+              $('#time_left').removeClass("negative");
                $('#weekly_balance').addClass('positive');
               $('#header_title').addClass('positive');
+              $('#time_left').addClass("positive");
               };
           
         });
