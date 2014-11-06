@@ -6,13 +6,13 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-b = Budget.create(name: "MyBudget")
-Category.create(name: "Food")
-Category.create(name: "Fun")
+# b = Budget.create(name: "MyBudget")
+# Category.create(name: "Food")
+# Category.create(name: "Fun")
 
-w = WeeklyBudget.create(current_fund: 100, start_fund: 100, weekno: 1)
-w.budget = b
-w.save
+# w = WeeklyBudget.create(current_fund: 100, start_fund: 100, weekno: 1, start_date:"")
+# w.budget = b
+# w.save
 
 
 

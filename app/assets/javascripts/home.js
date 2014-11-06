@@ -26,7 +26,7 @@ var main = function(){
       var firstStartDate = new Date();
     if(currentDay == 0){
       firstStartDate.setDate(currentDate.getDate() - currentDate.getDay());
-    }else
+    }else{
         firstStartDate.setDate(currentDate.getDate() - currentDate.getDay() + 1);
     };
 
