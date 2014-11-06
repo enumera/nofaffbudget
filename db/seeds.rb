@@ -12,6 +12,8 @@ Category.create(name: "Fun")
 
 w = WeeklyBudget.create(current_fund: 100, start_fund: 100, weekno: 1)
 w.budget = b
+w.save
+
 
 
 
