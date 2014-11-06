@@ -8,7 +8,8 @@ var main = function(){
    var budget = 1;
    var currentFund;
    var startFund;
-   var endDate;
+   // var startDate;
+   // var endDate;
    var daysLeft;
 
     $('#menu-page').hide();
@@ -16,6 +17,46 @@ var main = function(){
     $('#new-weekly-budget-page').hide();
     $('#new-budget-page').hide();
     $("#datepicker" ).datepicker();
+
+    var calculateFirstStartDate = function(){
+      var currentDate = new Date();
+
+      var currentDay = currentDate.getDay();
+
+      var firstStartDate = new Date();
+    if(currentDay == 0){
+      firstStartDate.setDate(currentDate.getDate() - currentDate.getDay());
+    }else
+        firstStartDate.setDate(currentDate.getDate() - currentDate.getDay() + 1);
+    };
+
+      console.log(firstStartDate);
+      var dd = firstStartDate.getDate();
+      var mm = firstStartDate.getMonth() + 1;
+      var yyyy = firstStartDate.getFullYear();
+      var dateString = yyyy + "-"+ mm + "-" + dd;
+      console.log(dateString);
+      return dateString;
+
+    };
+
+    // calculateEndDate(calculateFirstStartDate());
+
+
+    var calculateEndDate = function(budgetStartDate){
+      var startDate = new Date(budgetStartDate);
+      var endDate = new Date();
+
+      endDate.setDate(startDate.getDate() + 6);
+      var dd = endDate.getDate();
+      var mm = endDate.getMonth() + 1;
+      var yyyy = endDate.getFullYear();
+      var dateString = yyyy + "-"+ mm + "-" + dd;
+      console.log(dateString);
+      return dateString;
+
+    };
+     calculateEndDate(calculateFirstStartDate());
 
     var calculateTimeLeft = function(endDate){
       // console.log($scope.selectedTask.end_date)
@@ -25,7 +66,9 @@ var main = function(){
               finishDate.setMinutes(59);
                  var g = new Date();
                   var n = g.toString();
-                  console.log(n)
+                  console.log(n);
+                  console.log(g);
+                  console.log(finishDate.getFullYear());
 
 
               var d = new Date();
@@ -53,15 +96,15 @@ var main = function(){
 
 
   var selectBudget = function(){
-      $('#budgets').html("");
+    $('#budgets').html("");
     $('#home-page').hide();
     $('#select-budget-page').fadeIn(500).animate({left: "10px"}, 500);
     $.getJSON("budgets", function(data){
       var budgetList = $('#budgets');
       console.log(data)
 
-      $.each(data, function(i, budget){
-        var newBudgetItem = ('<li class="article" value=' + budget.id + '>' + budget.name + '</li>')
+      $.each(data, function(i, budgetData){
+        var newBudgetItem = ('<li class="article" value=' + budgetData.id + '>' + budgetData.name + '</li>')
         budgetList.append(newBudgetItem);
       });
     });
@@ -75,6 +118,7 @@ var main = function(){
       $this.toggleClass('selected');
       budgetSelected = $this.val();
       console.log($this);
+      console.log("Budget selected")
       console.log(budgetSelected);
       budget = budgetSelected;
     
@@ -93,6 +137,7 @@ var main = function(){
       $('#add-category-page').hide();
       $('#new-weekly-budget-page').hide();
       $('#new-budget-page').hide();
+      $('.close').show();
       // $('#select-budget-page').hide();
       $("#datepicker" ).datepicker();
 
@@ -100,7 +145,9 @@ var main = function(){
 
       // $getLatestWeekno();
       //     console.log(nextWeekNo);
-     
+      console.log("budget to be brought back");
+     console.log(budget);
+
      $.getJSON("budgets/" + budget + "/weekly_budgets", function(data){
       
         console.log(data);
@@ -135,6 +182,16 @@ var main = function(){
             });
           });
         });
+      console.log("this is the current week no")
+     console.log(currentWeekNo);
+      // if(currentWeekNo == 0){
+      //     $('#menu-page').animate({left : "320px"},1000).fadeOut();
+      //     $('#home-page').animate({left : "320px"}, 1000).fadeOut();
+
+      //     $('#day-of-week').hide();
+      //     $('#close').hide();
+      //     $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
+      // }else{
 
         $.getJSON("budgets/" + budget + "/weekly_budgets/" + currentWeekNo, function(data){
           $('#weekly_balance').html("");
@@ -145,10 +202,11 @@ var main = function(){
           endDate = data.end_date;
 
           daysLeft = calculateTimeLeft(endDate);
+          calculateEndDate(data.start_date);
           console.log(daysLeft);
 
           $('#time_left').text(daysLeft + " days left");
-          
+
           $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
 
           console.log(data.current_fund);
@@ -167,9 +225,10 @@ var main = function(){
                $('#weekly_balance').addClass('positive');
               $('#header_title').addClass('positive');
               $('#time_left').addClass("positive");
-              };
+            };
           
         });
+      // };
       });
     }
 
@@ -210,6 +269,10 @@ var main = function(){
           menu_shown = false;
       }else{
         $('#home-page').animate({left : "300px"},1000);
+        $('#select-budget-page').hide();
+        $('#add-category-page').hide();
+        $('#new-weekly-budget-page').hide();
+        $('#new-budget-page').hide();
         $('#menu-page').fadeIn(500).animate({left : "10px"},1000);
         menu_shown = true;
       }
@@ -246,21 +309,41 @@ var main = function(){
       $('#weekly-budget-submit').on('click', function(){
 
         var newBudgetAmount = $('#budget-input').val();
-        createWeeklyBudget(newBudgetAmount, nextWeekNo);
+          var startDate = calculateFirstStartDate();
+          var endDate = calculateEndDate(startDate);
+        createWeeklyBudget(newBudgetAmount, nextWeekNo, startDate, endDate);
         $('#budget-input').val("");
         $('#new-weekly-budget-page').fadeOut().animate({left : "320px"},1000);
         $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
         initialise();
     });
 
-         $('#new-budget-submit').on('click', function(){
+      $('#new-budget-submit').on('click', function(){
 
         var newBudgetName = $('#new-budget-input').val();
         createNewBudget(newBudgetName);
+          $.getJSON("/budgets", function(data){
+        console.log(data);
+        var latestBudget = data.length;
+        budget = data[latestBudget-1].id;
+        console.log(budget);
+        });
         $('#new-budget-input').val("");
         $('#new-budget-page').fadeOut().animate({left : "320px"},1000);
         $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
-        initialise();
+
+        //Create the weekly budget
+
+          $('#menu-page').animate({left : "320px"},1000).fadeOut();
+          $('#home-page').animate({left : "320px"}, 1000).fadeOut();
+          $('#day-of-week').hide();
+          $('.close').hide();
+          // startDate = calculateFirstStartDate();
+          // endDate = calculateEndDate(startDate);
+         
+          $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
+
+      
     });
 
 
@@ -450,20 +533,25 @@ var main = function(){
   }
 
 
-  var createWeeklyBudget = function(weeklyBudget, nextWeekNo){
+  var createWeeklyBudget = function(weeklyBudget, nextWeekNo, startDate, endDate){
     console.log(nextWeekNo);
+    // startDate = calculateFirstStartDate();
+    // endDate = calculateEndDate(startDate);
    
     path="budgets/" + budget + "/weekly_budgets"
     method="POST"
 
     var data = {};
-
-
-
+    
+    // data["end_date"] = endDate;
     data["budget_id"] = budget;
     data["start_fund"] = weeklyBudget;
     data["current_fund"] = weeklyBudget;
     data["weekno"] = nextWeekNo;
+    data["start_date"] = startDate;
+     data["end_date"] = endDate;
+   
+    console.log(endDate);
 
     console.log(data);
 
