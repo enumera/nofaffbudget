@@ -42,12 +42,24 @@
   position: relative;
   top: 10px;
   left: 60px;
-  width:180px;
+  width:200px;
   height: 60px;
   border-radius: 90px;
-  border: 2px solid green;
+ /* border: 2px solid green;*/
   text-align: center;
 
+}
+
+
+.positive{
+  border: 2px solid green;
+    background-color: green;
+
+}
+
+.negative{
+   border: 2px solid red;
+   background-color: red;
 }
 
 #current{
@@ -117,7 +129,7 @@ margin: 5px;
 }
 
 #header_title{
-background-color: green;
+/*background-color: green;*/
 color: white;
 border-top-left-radius: 20px;
 border-top-right-radius: 20px; 

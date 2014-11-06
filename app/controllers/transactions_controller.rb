@@ -68,7 +68,7 @@ class TransactionsController < ApplicationController
 
     weekly_budget_update = {}
     weekly_budget_update[:weekly_budget] = {}
-    weekly_budget_update[:weekly_budget][:current_fund] = new_current_fund
+    weekly_budget_update[:weekly_budget][:current_fund] = new_current_fund.round(2)
     weekly_budget_update.to_json
 
 

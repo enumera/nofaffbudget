@@ -5,26 +5,9 @@ var main = function(){
    var menu_shown = false;
    var nextWeekNo = 0;
    var currentWeekNo = 0;
+    var budget = 1;
 
 
-  // function getLatestWeekno(){
-  //    $.getJSON("budgets/1/weekly_budgets", function(data){
-      
-  //     console.log(data);
-  //     var dataLength = data.length;
-  //     console.log(dataLength);
-        
-  //      nextWeekNo = parseInt(data[dataLength-1].weekno) + 1;
-  //      currentWeekNo = parseInt(dataLength-1);
-  //      console.log("This week no is working:")
-  //      console.log(nextWeekNo);
-  //      console.log(currentWeekNo);
-
-
-  //     // return newWeekno;
-          
-  //     });
-  // };
 
      var initialise = function(){
     // gets the weekly budget information
@@ -34,10 +17,12 @@ var main = function(){
       $('#new-weekly-budget-page').hide();
       $("#datepicker" ).datepicker();
 
+   
+
       // $getLatestWeekno();
       //     console.log(nextWeekNo);
      
-     $.getJSON("budgets/1/weekly_budgets", function(data){
+     $.getJSON("budgets/" + budget + "/weekly_budgets", function(data){
       
         console.log(data);
         var dataLength = data.length;
@@ -70,35 +55,25 @@ var main = function(){
           });
         });
 
-        $.getJSON("budgets/1/weekly_budgets/" + currentWeekNo, function(data){
+        $.getJSON("budgets/" + budget + "/weekly_budgets/" + currentWeekNo, function(data){
           $('#weekly_balance').html("");
           console.log("in this code");
+
           $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
+
+          console.log(data.current_fund);
+          if(data.current_fund < 0){
+              console.log('checking balance');
+              $('#weekly_balance').addClass('negative');
+              $('#header_title').addClass('negative');
+          }else{
+               $('#weekly_balance').addClass('positive');
+              $('#header_title').addClass('positive');
+              };
+          
         });
       });
- 
-
-    // Get category information and append to the main page.
-
-      // $.getJSON("/categories", function(data){
-      //   console.log(data)
-
-      //    var categoryList = $('#categories');
-
-      //    categoryList.html("");
-
-      //     $.each(data.categories, function(i, category){
-      //     var $newListItem = $('<li class="article" value='+ category.id +'>' + category.name + '</li>');
-      //         categoryList.append($newListItem);
-      //     });
-
-      //     $.getJSON("weekly_budgets/"+ currentWeekNo + "/transactions", function(data){
-      //       $('#categories li').each(function(i){
-      //         $(this).append('<span class="amount">' +'    '+ data.amounts[i] + '</span>');
-      //       });
-      //       });
-      //     });
-        }
+    }
 
    initialise();
 
@@ -276,22 +251,12 @@ var main = function(){
 
   var performTransaction = function(data){
     console.log("In performTransaction")
-    //ajax call to transaction
+    
 
     path="weekly_budgets/"+ data.weekly_budget_id  +"/transactions";
     method = "POST";
 
-    // var data = {};
 
-    // data["amount"] = 25.0;
-    // data["category_id"] = "1";
-    // data["weekly_budget_id"] = 1;
-
-    // $.each(transactionFields, function(i, field){
-
-    //   data[field] = $('#' + field).val();
-
-    // });
   console.log(data);
 
   $.ajax({
@@ -327,7 +292,7 @@ var main = function(){
   var createWeeklyBudget = function(weeklyBudget, nextWeekNo){
     console.log(nextWeekNo);
    
-    path="budgets/1/weekly_budgets"
+    path="budgets/" + budget + "/weekly_budgets"
     method="POST"
 
     var data = {};
