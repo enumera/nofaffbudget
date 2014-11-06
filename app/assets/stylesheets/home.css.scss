@@ -3,6 +3,7 @@
   position: absolute;
   width: 320px;
   height: 460px;
+  left: 320px;
  
 }
 
@@ -32,7 +33,7 @@
   overflow: scroll;
 }
 
-#categories, #transactions, #menu-items{
+#categories, #transactions, #menu-items, #budgets{
   list-style-type: none;
   padding:0px;
   margin: 0px;
@@ -110,7 +111,8 @@
 }
 
 .article {
-margin: 5px;
+
+  margin: 5px;
   width: 290px;
   height: 50px;
   border: 2px solid green;
@@ -119,6 +121,10 @@ margin: 5px;
   /*text-align: center;*/
   line-height: 50px;
  
+}
+
+#budgets .article{
+  font-size: 200%;
 }
 
 .arcticle.amount{
@@ -197,6 +203,15 @@ text-align: center;
   height: 460px;
   left: 320px;
   overflow: hidden;
+}
+
+#select-budget-page{
+  position: absolute;
+  width: 320px;
+  height: 460px;
+  left: 320px;
+  overflow: hidden;
+
 }
 
 #new-weekly-budget-page {

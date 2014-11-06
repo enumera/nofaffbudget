@@ -2,9 +2,9 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    
+    @budget = Budget.find(params[:budget_id])
     @week_budget = WeeklyBudget.last
-    @categories = Category.all
+    @categories = @budget.categories.all
 
       @transactions = @week_budget.transactions.all
 
@@ -23,7 +23,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: {:categories => @categories, :amounts=>@category_hash}}
+      format.json { render json: @categories}
     end
   end
 
@@ -59,11 +59,12 @@ class CategoriesController < ApplicationController
   # POST /categories
   # POST /categories.json
   def create
+    @budget = Budget.find(params[:budget_id])
     @category = Category.new(params[:category])
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to @category, notice: 'Category was successfully created.' }
+        format.html { redirect_to budget_category_path(@budget,@category), notice: 'Category was successfully created.' }
         format.json { render json: @category, status: :created, location: @category }
       else
         format.html { render action: "new" }

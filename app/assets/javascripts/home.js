@@ -5,19 +5,59 @@ var main = function(){
    var menu_shown = false;
    var nextWeekNo = 0;
    var currentWeekNo = 0;
-    var budget = 1;
+   var budget = 1;
+
+    $('#menu-page').hide();
+    $('#add-category-page').hide();
+    $('#new-weekly-budget-page').hide();
+    $('#new-budget-page').hide();
+    $("#datepicker" ).datepicker();
+
+  var selectBudget = function(){
+      $('#budgets').html("");
+    $('#home-page').hide();
+    $('#select-budget-page').fadeIn(500).animate({left: "10px"}, 500);
+    $.getJSON("budgets", function(data){
+      var budgetList = $('#budgets');
+      console.log(data)
+
+      $.each(data, function(i, budget){
+        var newBudgetItem = ('<li class="article" value=' + budget.id + '>' + budget.name + '</li>')
+        budgetList.append(newBudgetItem);
+      });
+    });
+  };
+
+  $('#budgets').on('click','li',function(){
+    var budgetSelected;
+   
+     $this = $(this);
+      console.log($this);
+      $this.toggleClass('selected');
+      budgetSelected = $this.val();
+      console.log($this);
+      console.log(budgetSelected);
+      budget = budgetSelected;
+    
+      $('#select-budget-page').animate({left: "320px"}, 1000).fadeOut();
+   
+      initialise();
+  });
+
 
 
 
      var initialise = function(){
+      $('#home-page').animate({left : "10px"}, 1000).fadeIn(1000);
     // gets the weekly budget information
-
       $('#menu-page').hide();
       $('#add-category-page').hide();
       $('#new-weekly-budget-page').hide();
+      $('#new-budget-page').hide();
+      // $('#select-budget-page').hide();
       $("#datepicker" ).datepicker();
 
-   
+    
 
       // $getLatestWeekno();
       //     console.log(nextWeekNo);
@@ -36,19 +76,21 @@ var main = function(){
 
           // Get category information and append to the main page.
 
-      $.getJSON("/categories", function(data){
+      $.getJSON("/budgets/" + budget + "/categories", function(data){
         console.log(data)
 
          var categoryList = $('#categories');
 
          categoryList.html("");
 
-          $.each(data.categories, function(i, category){
+          $.each(data, function(i, category){
           var $newListItem = $('<li class="article" value='+ category.id +'>' + category.name + '</li>');
               categoryList.append($newListItem);
           });
 
           $.getJSON("weekly_budgets/"+ currentWeekNo + "/transactions", function(data){
+            console.log("account data");
+            console.log(data);
             $('#categories li').each(function(i){
               $(this).append('<span class="amount">' +'    '+ data.amounts[i] + '</span>');
             });
@@ -79,7 +121,8 @@ var main = function(){
       });
     }
 
-   initialise();
+   selectBudget();
+   // initialise();
 
    var transactionFields = ['amount', 'categeory', 'type'];
 
@@ -122,6 +165,9 @@ var main = function(){
         case "Create a new budget":
             $('#new-budget-page').animate({left : "10px"},1000).fadeIn(500);
             break;
+        case "Select from budget":
+            selectBudget();
+            break; 
       };
     });
 
@@ -178,7 +224,7 @@ var main = function(){
 
         $.getJSON("weekly_budgets/"+ currentWeekNo + "/transactions", function(data){
           var transactionList = $('#transactions');
-
+          console.log("category selected")
           console.log(categoryNameSelected);
 
           $.each(data.transactions, function(i, transaction){
@@ -203,8 +249,10 @@ var main = function(){
               console.log(buttonSet)
               $this.append('<span class="setButton"><button>Allocate</button></span>').click(function(){
                 console.log("transaction now logged");
+                console.log($this);
+                $this.fadeOut();
                   //add a function to process the transaction
-
+                
                   data['category_id'] = parseInt($this.attr('value'));
                   data['amount'] = parseFloat($('#transaction-input').val());
                   data['weekly_budget_id'] = currentWeekNo;
@@ -212,12 +260,13 @@ var main = function(){
                   console.log(data);
 
                   performTransaction(data);
-                   $this.toggleClass('selected');
+                  $this.toggleClass('selected');
                   categorySelected = false;
                   $this.removeClass('with-button');
                   $('.setButton').remove();
                   $('#transaction-input').val('');
                   buttonSet = false;
+              
                   initialise();
               });
         };
@@ -290,13 +339,13 @@ var main = function(){
 
   var createCategory = function(categoryName){
 
-    path="categories";
+    path="budgets/" + budget +"/categories";
     method="POST";
 
     var data = {};
 
     data["name"] = categoryName;
-    data["budget_id"] = 1;
+    data["budget_id"] = budget;
 
     console.log(data);
 
@@ -339,7 +388,7 @@ var main = function(){
 
 
 
-    data["budget_id"] = 1;
+    data["budget_id"] = budget;
     data["start_fund"] = weeklyBudget;
     data["current_fund"] = weeklyBudget;
     data["weekno"] = nextWeekNo;

@@ -3,8 +3,9 @@ class TransactionsController < ApplicationController
   # GET /transactions.json
   def index
     @weekly_budget = WeeklyBudget.find(params[:weekly_budget_id])
-    @transactions = @weekly_budget.transactions.all
-     @categories = Category.all
+      @transactions = @weekly_budget.transactions.all
+       budget_id = @weekly_budget.budget_id
+        @categories = Category.where(budget_id: budget_id)
 
       @transactions = @weekly_budget.transactions.all
 

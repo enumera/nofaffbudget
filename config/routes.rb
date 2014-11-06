@@ -5,7 +5,10 @@ Nofaffbudget::Application.routes.draw do
     resources :transactions
   end
 
-  resources :categories
+  resources :budgets do
+    resources :categories
+  end
+  
 
 
   resources :budgets do
