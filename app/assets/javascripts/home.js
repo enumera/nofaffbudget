@@ -64,9 +64,13 @@ var main = function(){
           console.log(data.current_fund);
           if(data.current_fund < 0){
               console.log('checking balance');
+              $('#weekly_balance').removeClass('positive');
+              $('#header_title').removeClass('positive');
               $('#weekly_balance').addClass('negative');
               $('#header_title').addClass('negative');
           }else{
+              $('#weekly_balance').removeClass('negative');
+              $('#header_title').removeClass('negative');
                $('#weekly_balance').addClass('positive');
               $('#header_title').addClass('positive');
               };
