@@ -6,6 +6,8 @@ var main = function(){
    var nextWeekNo = 0;
    var currentWeekNo = 0;
    var budget = 1;
+   var currentFund;
+   var startFund;
 
     $('#menu-page').hide();
     $('#add-category-page').hide();
@@ -101,6 +103,10 @@ var main = function(){
           $('#weekly_balance').html("");
           console.log("in this code");
 
+          currentFund = data.current_fund;
+          startFund = data.start_fund;
+
+
           $('#weekly_balance').append($('<p id="current">'+ data.current_fund + '</p>'));
 
           console.log(data.current_fund);
@@ -128,6 +134,26 @@ var main = function(){
 
     console.log("this is being run");
     $('#categories').html("");
+
+
+//toggle amount spent
+
+  $('#header').on('click', function(){
+    $this.toggleClass('spent');
+
+    if ($this.hasClass('spent')){
+      var spent;
+      spent = parseFloat(startFund) - parseFloat(currentFund);
+      $('#header_title').text("Spent this week");
+       $('#weekly_balance').html("");
+       $('#weekly_balance').append($('<p id="current">'+ spent + '</p>'));
+
+    }else{
+       $('#header_title').text("Remaining money this week");
+         $('#weekly_balance').html("");
+        $('#weekly_balance').append($('<p id="current">'+ currentFund + '</p>'));
+    };
+  });
 
 //show menu-icon click function
 
