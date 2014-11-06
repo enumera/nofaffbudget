@@ -64,13 +64,13 @@ var main = function(){
           console.log(data.current_fund);
           if(data.current_fund < 0){
               console.log('checking balance');
-              $('#weekly_balance').removeClass('positive');
-              $('#header_title').removeClass('positive');
+              $('#weekly_balance').removeClass("positive");
+              $('#header_title').removeClass("positive");
               $('#weekly_balance').addClass('negative');
               $('#header_title').addClass('negative');
           }else{
-              $('#weekly_balance').removeClass('negative');
-              $('#header_title').removeClass('negative');
+              $('#weekly_balance').removeClass("negative");
+              $('#header_title').removeClass("negative");
                $('#weekly_balance').addClass('positive');
               $('#header_title').addClass('positive');
               };
@@ -118,6 +118,10 @@ var main = function(){
              $('#day-of-week').hide();
              $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
             break;
+
+        case "Create a new budget":
+            $('#new-budget-page').animate({left : "10px"},1000).fadeIn(500);
+            break;
       };
     });
 
@@ -127,6 +131,16 @@ var main = function(){
         createWeeklyBudget(newBudgetAmount, nextWeekNo);
         $('#budget-input').val("");
         $('#new-weekly-budget-page').fadeOut().animate({left : "320px"},1000);
+        $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
+        initialise();
+    });
+
+         $('#new-budget-submit').on('click', function(){
+
+        var newBudgetName = $('#new-budget-input').val();
+        createNewBudget(newBudgetName);
+        $('#new-budget-input').val("");
+        $('#new-budget-page').fadeOut().animate({left : "320px"},1000);
         $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
         initialise();
     });
@@ -246,7 +260,10 @@ var main = function(){
           $('#new-weekly-budget-page').fadeOut().animate({left : "320px"},1000);
           $('#home-page').fadeIn().animate({left : "10px"},1000);
           break;
-
+        case "new-budget-page":
+           $('#new-budget-page').fadeOut().animate({left : "320px"},1000);
+          $('#home-page').fadeIn().animate({left : "10px"},1000);
+          break;
       }
 
   });
@@ -291,6 +308,25 @@ var main = function(){
       });
   };
 
+
+  var createNewBudget = function(budgetName){
+
+    path="budgets";
+    method="POST";
+
+    var data = {};
+
+    data["name"] = budgetName;
+
+    $.ajax({
+      url: path,
+      method: method,
+      data: {budget: data},
+      dataType: "json"
+    });
+
+
+  }
 
 
   var createWeeklyBudget = function(weeklyBudget, nextWeekNo){

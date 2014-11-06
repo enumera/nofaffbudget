@@ -141,7 +141,7 @@ text-align: center;
   display: block;
 }
 
-#category-header, #weekly-header{
+#category-header, #weekly-header, #budget-header{
   width: 300px;
   height: 20px;
   font-size: 400%;
@@ -167,8 +167,17 @@ text-align: center;
 
 }
 
+#new-budget-input{
+  margin:2px 0 0 10px;
+  width: 240px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 200%;
 
-#category-submit, #weekly-budget-submit{
+}
+
+
+#category-submit, #weekly-budget-submit, #new-budget-submit{
   width: 300px;
   height: 40px;
   font-size: 100%;
@@ -196,6 +205,15 @@ text-align: center;
   height: 460px;
   left: 700px;
   overflow: hidden;
+}
+
+#new-budget-page{
+  position: absolute;
+  width: 320px;
+  height: 460px;
+  left: 320px;
+  overflow: hidden;
+
 }
 
 #menu-page{
