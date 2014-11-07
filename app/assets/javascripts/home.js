@@ -3,6 +3,7 @@ var main = function(){
    var buttonSet = false;
    var categorySelected = false;
    var menu_shown = false;
+   var budgetSelected = false;
    var nextWeekNo = 0;
    var currentWeekNo = 0;
    var budget = 1;
@@ -96,6 +97,7 @@ var main = function(){
 
 
   var selectBudget = function(){
+    budgetSelected = false;
     $('#budgets').html("");
     $('#home-page').hide();
     $('#select-budget-page').fadeIn(500).animate({left: "10px"}, 500);
@@ -111,16 +113,16 @@ var main = function(){
   };
 
   $('#budgets').on('click','li',function(){
-    var budgetSelected;
-   
+    var budgetSelect;
+    budgetSelected = true;
      $this = $(this);
       console.log($this);
       $this.toggleClass('selected');
-      budgetSelected = $this.val();
+      budgetSelect = $this.val();
       console.log($this);
       console.log("Budget selected")
-      console.log(budgetSelected);
-      budget = budgetSelected;
+      console.log(budgetSelect);
+      budget = budgetSelect;
     
       $('#select-budget-page').animate({left: "320px"}, 1000).fadeOut();
    
@@ -264,7 +266,11 @@ var main = function(){
 
     $('#menu-icon').on('click', function(){
       if(menu_shown){
+        if(!budgetSelected){
+        $('#select-budget-page').fadeIn().animate({left : "10px"},1000);
+        }else{
         $('#home-page').animate({left : "10px"},1000);
+        };
         $('#menu-page').fadeOut().animate({left : "320px"},1000);
           menu_shown = false;
       }else{
@@ -273,8 +279,14 @@ var main = function(){
         $('#add-category-page').hide();
         $('#new-weekly-budget-page').hide();
         $('#new-budget-page').hide();
+        if(budgetSelected){
+          $('.no-budget').show();
+        }else{
+           $('.no-budget').hide();
+        };
 
         $('#menu-page').fadeIn(500).animate({left : "10px"},1000);
+
         menu_shown = true;
       }
     });
