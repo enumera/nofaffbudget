@@ -273,6 +273,7 @@ var main = function(){
         $('#add-category-page').hide();
         $('#new-weekly-budget-page').hide();
         $('#new-budget-page').hide();
+
         $('#menu-page').fadeIn(500).animate({left : "10px"},1000);
         menu_shown = true;
       }
@@ -371,6 +372,7 @@ var main = function(){
    
       if($('#transaction-input').val()==""){
         $('#transactions').html("");
+        $('#menu-icon').hide();
         $('#transactions-page').animate({left : "0px"}, 500);
         // $('#home-page').animate({left : "320px"},1000);
          $('#home-page').fadeOut();
@@ -443,6 +445,7 @@ var main = function(){
         categorySelected=false;
         $('#transactons-page').html("");
         $('#home-page').fadeIn();
+        $('#menu-icon').fadeIn();
     };
   });
 
