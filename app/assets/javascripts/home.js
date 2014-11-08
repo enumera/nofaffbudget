@@ -217,16 +217,20 @@ var main = function(){
               $('#weekly_balance').removeClass("positive");
               $('#header_title').removeClass("positive");
               $('#time_left').removeClass("positive");
+              $('#view_weekly_chart').removeClass("positive");
               $('#weekly_balance').addClass('negative');
               $('#header_title').addClass('negative');
               $('#time_left').addClass("negative");
+               $('#view_weekly_chart').addClass("negative");
           }else{
               $('#weekly_balance').removeClass("negative");
               $('#header_title').removeClass("negative");
               $('#time_left').removeClass("negative");
+               $('#view_weekly_chart').removeClass("negative");
                $('#weekly_balance').addClass('positive');
               $('#header_title').addClass('positive');
               $('#time_left').addClass("positive");
+              $('#view_weekly_chart').addClass("positive");
             };
           
         });
@@ -275,10 +279,11 @@ var main = function(){
           menu_shown = false;
       }else{
         $('#home-page').animate({left : "300px"},1000);
-        $('#select-budget-page').hide();
-        $('#add-category-page').hide();
-        $('#new-weekly-budget-page').hide();
-        $('#new-budget-page').hide();
+        $('#select-budget-page').fadeOut().animate({left: "350px"},1000);
+        $('#add-category-page').fadeOut().animate({left: "350px"},1000);
+        $('#new-weekly-budget-page').fadeOut().animate({left: "350px"},1000);
+        $('#new-budget-page').fadeOut().animate({left: "350px"},1000);
+        $('#chart').fadeOut().animate({left: "350px"},1000);
         if(budgetSelected){
           $('.no-budget').show();
         }else{
@@ -578,6 +583,60 @@ var main = function(){
     });
 
   };
+
+  var runChart = function(){
+
+        var data = [
+              {
+                  value: 300,
+                  color:"#F7464A",
+                  highlight: "#FF5A5E",
+                  label: "Red"
+              },
+              {
+                  value: 50,
+                  color: "#46BFBD",
+                  highlight: "#5AD3D1",
+                  label: "Green"
+              },
+              {
+                  value: 100,
+                  color: "#FDB45C",
+                  highlight: "#FFC870",
+                  label: "Yellow"
+              }
+          ]
+
+  // var runChart = function(){
+    // Get context with jQuery - using jQuery's .get() method.
+    console.log($("#myChart"));
+      var ctx = $("#myChart").get(0).getContext("2d");
+      console.log(data);
+
+      // This will get the first returned node in the jQuery collection.
+      // var myNewChart = new Chart(ctx);
+
+      var myDoughnutChart = new Chart(ctx).Doughnut(data);
+
+  };
+
+  $('#view_weekly_chart').on('click', function(){
+    if($('#canvas').length==0){
+      console.log("deleting chart");
+       $('#myChart').remove();
+     };
+      $('#home-page').animate({left : "320px"},1000).fadeOut();
+      $('#chart').append('<canvas id="myChart" width="300" height="300"></canvas>');
+      $('#chart').fadeIn().animate({left: "10px"}, 1000);
+    runChart();
+  
+  });
+  // $('#chart').on('click', function(){
+
+  //   runChart();
+
+  // });
+
 };
 
 
