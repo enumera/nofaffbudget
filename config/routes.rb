@@ -1,4 +1,7 @@
 Nofaffbudget::Application.routes.draw do
+  resources :companies
+
+
   #resources :transactions 
 
   resources :weekly_budgets do

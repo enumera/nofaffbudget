@@ -19,6 +19,8 @@ var main = function(){
     $('#new-budget-page').hide();
     $("#datepicker" ).datepicker();
 
+    //This function calculates the start date of the week for budgeting.  Not sure what this code is doing ?
+
     var calculateFirstStartDate = function(){
       var currentDate = new Date();
 
@@ -41,7 +43,7 @@ var main = function(){
 
     };
 
-    // calculateEndDate(calculateFirstStartDate());
+  // This function calculates the end of the week being budgeted assuming the startdate has been set.
 
 
     var calculateEndDate = function(budgetStartDate){
@@ -58,6 +60,8 @@ var main = function(){
 
     };
      calculateEndDate(calculateFirstStartDate());
+
+     //  Calculates the number of days left in the week for the budget.  There is a defect that it seems to be calculated the date since 'unix' date.
 
     var calculateTimeLeft = function(endDate){
       // console.log($scope.selectedTask.end_date)
@@ -93,7 +97,10 @@ var main = function(){
 
              return days;
 
-            }
+            };
+
+
+// Displays the available budgetd for the user.
 
 
   var selectBudget = function(){
@@ -111,6 +118,8 @@ var main = function(){
       });
     });
   };
+
+  //  The user can select a budget it will move the user to the select-budget-page.
 
   $('#budgets').on('click','li',function(){
     var budgetSelect;
@@ -130,6 +139,7 @@ var main = function(){
   });
 
 
+  // Initial function to set up the screens.  There are several ajax calls going on - may not be required with some serializers.  Could probably DRY this up a bit.
 
 
      var initialise = function(){
@@ -147,7 +157,7 @@ var main = function(){
 
       // $getLatestWeekno();
       //     console.log(nextWeekNo);
-      console.log("budget to be brought back");
+    console.log("budget to be brought back");
      console.log(budget);
 
      $.getJSON("budgets/" + budget + "/weekly_budgets", function(data){
@@ -236,8 +246,10 @@ var main = function(){
         });
       // };
       });
-    }
+    };
 
+
+// This is first thing the user must do.  Initialise is called in the selectBudget function.
    selectBudget();
    // initialise();
 
@@ -247,26 +259,26 @@ var main = function(){
     $('#categories').html("");
 
 
-//toggle amount spent
+//toggle amount spent or remaing
 
-  $('#header').on('click', function(){
-    $this.toggleClass('spent');
+    $('#header').on('click', function(){
+      $this.toggleClass('spent');
 
-    if ($this.hasClass('spent')){
-      var spent;
-      spent = parseFloat(startFund) - parseFloat(currentFund);
-      $('#header_title').text("Spent this week");
-       $('#weekly_balance').html("");
-       $('#weekly_balance').append($('<p id="current">'+ spent + '</p>'));
-
-    }else{
-       $('#header_title').text("Remaining money this week");
+      if ($this.hasClass('spent')){
+        var spent;
+        spent = parseFloat(startFund) - parseFloat(currentFund);
+        $('#header_title').text("Spent this week");
          $('#weekly_balance').html("");
-        $('#weekly_balance').append($('<p id="current">'+ currentFund + '</p>'));
-    };
-  });
+         $('#weekly_balance').append($('<p id="current">'+ spent + '</p>'));
 
-//show menu-icon click function
+      }else{
+         $('#header_title').text("Remaining money this week");
+           $('#weekly_balance').html("");
+          $('#weekly_balance').append($('<p id="current">'+ currentFund + '</p>'));
+      };
+    });
+
+//show menu-icon click function.  This removes the menu button depending on which screen the user is on.
 
     $('#menu-icon').on('click', function(){
       if(menu_shown){
@@ -296,7 +308,7 @@ var main = function(){
       }
     });
 
-//Menu items controllers
+//Menu items controllers.  This switches what is available to the user depending on what screen they are on - could be DRYed up a bit.
 
     $('#menu-items').on('click', 'li', function(){
       $this = $(this);
@@ -321,20 +333,26 @@ var main = function(){
         case "Select from budget":
             selectBudget();
             break; 
-      };
+        };
     });
+
+    //  Listener for when the user creates a new week to budget on.
 
       $('#weekly-budget-submit').on('click', function(){
 
         var newBudgetAmount = $('#budget-input').val();
           var startDate = calculateFirstStartDate();
           var endDate = calculateEndDate(startDate);
+
         createWeeklyBudget(newBudgetAmount, nextWeekNo, startDate, endDate);
         $('#budget-input').val("");
         $('#new-weekly-budget-page').fadeOut().animate({left : "320px"},1000);
         $('#home-page').animate({left : "10px"}, 1000).fadeIn(500);
         initialise();
     });
+
+    // Listener to allow the user to create a new budget.
+
 
       $('#new-budget-submit').on('click', function(){
 
@@ -360,11 +378,10 @@ var main = function(){
           // endDate = calculateEndDate(startDate);
          
           $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
-
-      
-    });
+      });
 
 
+//Listener to allow the user to create a new category
 
     $('#category-submit').on('click', function(){
       var newCategoryName = $('#category-input').val();
@@ -375,7 +392,7 @@ var main = function(){
         initialise();
     });
 
-//Listener for category li
+//Listener for category li - it depends what the action is here the user could have entered a value to add to the category in which case a button will be shown for the user to confirm the allocation, otherwise show the transactions against the category for the week.
 
   $('#categories').on('click', 'li', function(){
      console.log(currentWeekNo);
@@ -405,7 +422,7 @@ var main = function(){
 
             if(categoryNameSelected == transaction.category_id){
 
-            var $newListItem = $('<li class="article">' + transaction.amount + '<li>');
+            var $newListItem = $('<li class="article">' + transaction.company +'  '+ transaction.amount + '<p>'+ transaction.created_at +'</p></li>');
             transactionList.append($newListItem);
             };
           });
@@ -448,7 +465,7 @@ var main = function(){
     };
   });
 
-  //allow user to select back.
+  //allow user to select back from the list of transactions.
 
   $('#transactions').on('click', 'li', function(){
      
@@ -512,6 +529,8 @@ var main = function(){
     });
   };
 
+  //function connected to the listener that creates the category.
+
   var createCategory = function(categoryName){
 
     path="budgets/" + budget +"/categories";
@@ -532,6 +551,8 @@ var main = function(){
       });
   };
 
+  // Function that creates the new budget name.
+
 
   var createNewBudget = function(budgetName){
 
@@ -548,10 +569,9 @@ var main = function(){
       data: {budget: data},
       dataType: "json"
     });
-
-
   }
 
+  //Function that creates the new Weekly Budget.
 
   var createWeeklyBudget = function(weeklyBudget, nextWeekNo, startDate, endDate){
     console.log(nextWeekNo);
@@ -583,6 +603,9 @@ var main = function(){
     });
 
   };
+
+///-----------------charting code-------------///
+
 
   var runChart = function(){
 
@@ -631,13 +654,13 @@ var main = function(){
     runChart();
   
   });
-  // $('#chart').on('click', function(){
 
-  //   runChart();
+///End of charting
 
-  // });
 
-};
+
+
+};//-----end of main-----///
 
 
 $(document).ready(main)
