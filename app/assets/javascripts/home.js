@@ -143,7 +143,7 @@ var main = function(){
 
 
      var initialise = function(){
-      $('#home-page').animate({left : "10px"}, 1000).fadeIn(1000);
+      // $('#home-page').animate({left : "10px"}, 1000).fadeIn(1000);
     // gets the weekly budget information
       $('#menu-page').hide();
       $('#add-category-page').hide();
@@ -171,6 +171,17 @@ var main = function(){
          console.log("This week no is working:")
          console.log(nextWeekNo);
          console.log(currentWeekNo);
+         if(calculateTimeLeft(data[dataLength-2].end_date)<0){
+            selectPage("Add a new weekly budget");
+            console.log("adding a new weekly budget");
+         }else{
+            console.log("new week")
+            $('#home-page').animate({left : "10px"}, 1000).fadeIn(1000);
+         
+
+        // if(calculateTimeLeft(data[dataLength-1]).endDate) > 0){
+        //   console.log("days left is positive");
+        // }
 
           // Get category information and append to the main page.
 
@@ -196,14 +207,7 @@ var main = function(){
         });
       console.log("this is the current week no")
      console.log(currentWeekNo);
-      // if(currentWeekNo == 0){
-      //     $('#menu-page').animate({left : "320px"},1000).fadeOut();
-      //     $('#home-page').animate({left : "320px"}, 1000).fadeOut();
-
-      //     $('#day-of-week').hide();
-      //     $('#close').hide();
-      //     $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
-      // }else{
+    
 
         $.getJSON("budgets/" + budget + "/weekly_budgets/" + currentWeekNo, function(data){
           $('#weekly_balance').html("");
@@ -244,9 +248,10 @@ var main = function(){
             };
           
         });
-      // };
+      };
       });
-    };
+    
+  };
 
 
 // This is first thing the user must do.  Initialise is called in the selectBudget function.
@@ -289,13 +294,13 @@ var main = function(){
         };
         $('#menu-page').fadeOut().animate({left : "320px"},1000);
           menu_shown = false;
-      }else{
-        $('#home-page').animate({left : "300px"},1000);
-        $('#select-budget-page').fadeOut().animate({left: "350px"},1000);
-        $('#add-category-page').fadeOut().animate({left: "350px"},1000);
-        $('#new-weekly-budget-page').fadeOut().animate({left: "350px"},1000);
-        $('#new-budget-page').fadeOut().animate({left: "350px"},1000);
-        $('#chart').fadeOut().animate({left: "350px"},1000);
+        }else{
+          $('#home-page').animate({left : "300px"},1000);
+          $('#select-budget-page').fadeOut().animate({left: "350px"},1000);
+          $('#add-category-page').fadeOut().animate({left: "350px"},1000);
+          $('#new-weekly-budget-page').fadeOut().animate({left: "350px"},1000);
+          $('#new-budget-page').fadeOut().animate({left: "350px"},1000);
+          $('#chart').fadeOut().animate({left: "350px"},1000);
         if(budgetSelected){
           $('.no-budget').show();
         }else{
@@ -310,14 +315,8 @@ var main = function(){
 
 //Menu items controllers.  This switches what is available to the user depending on what screen they are on - could be DRYed up a bit.
 
-    $('#menu-items').on('click', 'li', function(){
-      $this = $(this);
-      var menuSelected = $this.text();
-      console.log(menuSelected);
-      $('#menu-page').animate({left : "320px"},1000).fadeOut();
-      $('#home-page').animate({left : "320px"}, 1000).fadeOut();
-
-      switch(menuSelected){
+  var selectPage = function(pageSelected){
+        switch(pageSelected){
         //create a new category
         case "Add a new category":
              $('#add-category-page').animate({left : "10px"},1000).fadeIn(500);
@@ -325,6 +324,8 @@ var main = function(){
         case "Add a new weekly budget":
              $('#day-of-week').hide();
              $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
+             $(".close").hide();
+            
             break;
 
         case "Create a new budget":
@@ -334,6 +335,37 @@ var main = function(){
             selectBudget();
             break; 
         };
+
+  }
+
+
+
+
+
+    $('#menu-items').on('click', 'li', function(){
+      $this = $(this);
+      var menuSelected = $this.text();
+      console.log(menuSelected);
+      $('#menu-page').animate({left : "320px"},1000).fadeOut();
+      $('#home-page').animate({left : "320px"}, 1000).fadeOut();
+      selectPage(menuSelected);
+      // switch(menuSelected){
+      //   //create a new category
+      //   case "Add a new category":
+      //        $('#add-category-page').animate({left : "10px"},1000).fadeIn(500);
+      //       break;
+      //   case "Add a new weekly budget":
+      //        $('#day-of-week').hide();
+      //        $('#new-weekly-budget-page').animate({left : "10px"},1000).fadeIn(500);
+      //       break;
+
+      //   case "Create a new budget":
+      //       $('#new-budget-page').animate({left : "10px"},1000).fadeIn(500);
+      //       break;
+      //   case "Select from budget":
+      //       selectBudget();
+      //       break; 
+      //   };
     });
 
     //  Listener for when the user creates a new week to budget on.
