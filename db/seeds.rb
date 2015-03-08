@@ -7,10 +7,10 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 b = Budget.create(name: "MyBudget")
-Category.create(name: "Food")
-Category.create(name: "Fun")
+Category.create(name: "Food", budget_id: 1)
+Category.create(name: "Fun", budget_id: 1)
 
-w = WeeklyBudget.create(current_fund: 100, start_fund: 100, weekno: 1, start_date:"2014-11-03", end_date: "2014-11-09")
+w = WeeklyBudget.create(current_fund: 100, start_fund: 100, weekno: 1, start_date:"2015-03-03", end_date: "2015-03-09")
 w.budget = b
 w.save
 

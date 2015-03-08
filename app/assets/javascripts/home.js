@@ -27,11 +27,12 @@ var main = function(){
       var currentDay = currentDate.getDay();
 
       var firstStartDate = new Date();
-    if(currentDay == 0){
-      firstStartDate.setDate(currentDate.getDate() - currentDate.getDay());
-    }else{
-        firstStartDate.setDate(currentDate.getDate() - currentDate.getDay() + 1);
-    };
+
+      if(currentDay == 0){
+        firstStartDate.setDate(currentDate.getDate() - currentDate.getDay());
+      }else{
+          firstStartDate.setDate(currentDate.getDate() - currentDate.getDay() + 1);
+      };
 
       console.log(firstStartDate);
       var dd = firstStartDate.getDate();
@@ -153,8 +154,6 @@ var main = function(){
       // $('#select-budget-page').hide();
       $("#datepicker" ).datepicker();
 
-    
-
       // $getLatestWeekno();
       //     console.log(nextWeekNo);
     console.log("budget to be brought back");
@@ -171,7 +170,7 @@ var main = function(){
          console.log("This week no is working:")
          console.log(nextWeekNo);
          console.log(currentWeekNo);
-         if(calculateTimeLeft(data[dataLength-2].end_date)<0){
+         if(calculateTimeLeft(data[dataLength-1].end_date)<0){
             selectPage("Add a new weekly budget");
             console.log("adding a new weekly budget");
          }else{
@@ -193,13 +192,14 @@ var main = function(){
          categoryList.html("");
 
           $.each(data, function(i, category){
-          var $newListItem = $('<li class="article" value='+ category.id +'>' + category.name + '</li>');
+          var $newListItem = $('<li class="article category'+category.id+'" value='+ category.id +'>' + category.name + '</li>');
               categoryList.append($newListItem);
           });
 
           $.getJSON("weekly_budgets/"+ currentWeekNo + "/transactions", function(data){
             console.log("account data");
             console.log(data);
+
             $('#categories li').each(function(i){
               $(this).append('<span class="amount">' +'    '+ data.amounts[i] + '</span>');
             });
@@ -245,12 +245,10 @@ var main = function(){
               $('#header_title').addClass('positive');
               $('#time_left').addClass("positive");
               $('#view_weekly_chart').addClass("positive");
-            };
-          
+          };      
         });
       };
-      });
-    
+    });
   };
 
 
@@ -433,6 +431,7 @@ var main = function(){
       console.log($this);
       $this.toggleClass('selected');
       var categoryNameSelected = $this.attr('value');
+      console.log(categoryNameSelected);
       categorySelected = true;
 
    
@@ -449,13 +448,17 @@ var main = function(){
           var transactionList = $('#transactions');
           console.log("category selected")
           console.log(categoryNameSelected);
+          var newListItem;
+          var categoryName = $('.category'+categoryNameSelected).text();
+          console.log(categoryName);
+          transactionList.append('<li class="article">')
 
           $.each(data.transactions, function(i, transaction){
 
             if(categoryNameSelected == transaction.category_id){
 
-            var $newListItem = $('<li class="article">' + transaction.company +'  '+ transaction.amount + '<p>'+ transaction.created_at +'</p></li>');
-            transactionList.append($newListItem);
+            newListItem = $('<li class="article">'+ transaction.amount + '</li>');
+            transactionList.append(newListItem);
             };
           });
           transactionList.append($('<li class="article home"> Back</li>'));
@@ -492,10 +495,10 @@ var main = function(){
               
                   initialise();
               });
+            };
+          };
         };
-      };
-    };
-  });
+      });
 
   //allow user to select back from the list of transactions.
 
@@ -537,21 +540,16 @@ var main = function(){
            $('#new-budget-page').fadeOut().animate({left : "320px"},1000);
           $('#home-page').fadeIn().animate({left : "10px"},1000);
           break;
-      }
-
+      };
   });
 
   // add a transaction
 
   var performTransaction = function(data){
     console.log("In performTransaction")
-    
-
     path="weekly_budgets/"+ data.weekly_budget_id  +"/transactions";
     method = "POST";
-
-
-  console.log(data);
+    console.log(data);
 
   $.ajax({
     url: path,
