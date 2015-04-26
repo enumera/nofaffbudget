@@ -1,4 +1,4 @@
-
+//just putting a comment change here
 var main = function(){
    var buttonSet = false;
    var categorySelected = false;
